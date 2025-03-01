@@ -3,9 +3,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const { connectDB } = require("../backend/config/dbconfig.js");
-
+const { connectDB } = require("./config/dbconfig.js");
+const router = require("./routes/wokOrderRoutes.js");
 const app = express();
+const cors = require("cors");
+
+app.use(express.urlencoded({ extended: false }));
+app.use("/api", router);
+
+app.get("/", async (req, res) => {
+  res.send("API getting");
+});
 
 connectDB()
   .then(() => {
@@ -17,7 +25,3 @@ connectDB()
     });
   })
   .catch();
-
-app.get("/", async (req, res) => {
-  res.send("API getting");
-});
